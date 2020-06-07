@@ -16,17 +16,17 @@
         </div>
       </nav>
     <div class="container">
-        <iframe title="PDF" src="static/sample.pdf" style="width: 100%; height: 50rem;" frameborder="0"></iframe>
+        <iframe title="PDF" src="static/output.pdf" style="width: 100%; height: 50rem;" frameborder="0"></iframe>
         <div class="row">
-        <form class="col s12">
+        <form class="col s12" method="post">
           <div class="row">
             <div class="input-field">
                 <i class="material-icons prefix">mode_edit</i>
-              <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+              <textarea id="icon_prefix2" class="materialize-textarea" name="query"></textarea>
               <label for="icon_prefix2">Query</label>
             </div>
           </div>
-          <button class="waves-effect waves-light blue btn">highlight!</button>
+          <button type="submit" class="waves-effect waves-light blue btn">highlight!</button>
         </form>
       </div>
     </div>
