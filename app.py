@@ -10,18 +10,6 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/'
 app.config['SECRET_KEY'] = 'secret'
 
-def nocache(view):
-    @wraps(view)
-    def no_cache(*args, **kwargs):
-        response = make_response(view(*args, **kwargs))
-        response.headers['Last-Modified'] = datetime.now()
-        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
-        response.headers['Pragma'] = 'no-cache'
-        response.headers['Expires'] = '-1'
-        return response
-        
-    return update_wrapper(no_cache, view)
-
 @app.route("/", methods=['POST', 'GET'])
 def upload():
     if request.method == 'POST':
@@ -36,7 +24,6 @@ def upload():
     return render_template("upload.html")
 
 @app.route("/search", methods=['POST', 'GET'])
-@nocache
 def home():
     if request.method == 'POST':
         query = request.form['query']
