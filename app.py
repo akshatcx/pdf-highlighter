@@ -1,11 +1,14 @@
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, flash, redirect
 import fitz
 from functools import wraps, update_wrapper
 from datetime import datetime
+from shutil import copyfile
+import os
 
 
 app = Flask(__name__)
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config['UPLOAD_FOLDER'] = 'static/'
+app.config['SECRET_KEY'] = 'secret'
 
 def nocache(view):
     @wraps(view)
@@ -20,6 +23,19 @@ def nocache(view):
     return update_wrapper(no_cache, view)
 
 @app.route("/", methods=['POST', 'GET'])
+def upload():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        file.save(os.path.join('static', "main.pdf"))
+        copyfile('static/main.pdf', 'static/output.pdf')
+        print("HI")
+        return redirect('/search')
+    return render_template("upload.html")
+
+@app.route("/search", methods=['POST', 'GET'])
 @nocache
 def home():
     if request.method == 'POST':
